@@ -1,0 +1,16 @@
+.pardotmarketing-form-handler-fields {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.pardotmarketing-form-handler-input {
+  margin: 0;
+}
+
+.pardotmarketing-form-handler-button {
+  border-radius: 5px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0.8em 2em;
+  transition: all 0.3s;
+}

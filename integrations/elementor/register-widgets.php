@@ -1,5 +1,14 @@
 <?php
-namespace PardotMarketingElementor;
+/**
+ * Handles registering Elementor widgets
+ *
+ * @package PardotMarketing
+ * @since 1.0.0
+ */
+
+namespace PardotMarketing;
+
+defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
 /**
  * Class Plugin
@@ -7,7 +16,7 @@ namespace PardotMarketingElementor;
  * Main Plugin class
  * @since 1.0.0
  */
-class Plugin {
+class PardotMarketing_Widgets {
 
   /**
    * Instance
@@ -16,7 +25,7 @@ class Plugin {
    * @access private
    * @static
    *
-   * @var Plugin The single instance of the class.
+   * @var PardotMarketing_Widgets The single instance of the class.
    */
   private static $_instance = null;
 
@@ -25,10 +34,10 @@ class Plugin {
    *
    * Ensures only one instance of the class is loaded or can be loaded.
    *
-   * @since 1.2.0
+   * @since 1.0.0
    * @access public
    *
-   * @return Plugin An instance of the class.
+   * @return PardotMarketing_Widgets An instance of the class.
    */
   public static function instance() {
     if ( is_null( self::$_instance ) ) {
@@ -43,14 +52,12 @@ class Plugin {
    *
    * Load required plugin core files.
    *
-   * @since 1.2.0
+   * @since 1.0.0
    * @access public
    */
   public function widget_scripts() {
-    $plugin = get_plugin_data( PARDOTMARKETING_PLUGIN, false, false );
-
-    wp_register_style( 'pardotmarketing-form', plugin_dir_url( PARDOTMARKETING_PLUGIN ) . 'assets/css/form.css', [], $plugin['Version'] );
-    wp_register_script( 'pardotmarketing-form', plugin_dir_url( PARDOTMARKETING_PLUGIN ) . 'assets/js/form.js', [ 'jquery' ], $plugin['Version'], true );
+    wp_register_script( 'pardotmarketing-jquery-validation', plugin_dir_url( PARDOT_MARKETING ) . 'assets/js/jquery.validate.min.js', [ 'jquery' ], PARDOT_MARKETING_VERSION, true );
+    wp_register_style( 'pardotmarketing-form-handler', plugin_dir_url( PARDOT_MARKETING ) . 'assets/css/form-handler.css', [], PARDOT_MARKETING_VERSION );
   }
 
   /**
@@ -58,12 +65,11 @@ class Plugin {
    *
    * Load widgets files
    *
-   * @since 1.2.0
+   * @since 1.0.0
    * @access private
    */
   private function include_widgets_files() {
-    // Form widget
-    require_once( __DIR__ . '/widgets/form.php' );
+    require_once( __DIR__ . '/widgets/form-handler.php' );
   }
 
   /**
@@ -79,17 +85,7 @@ class Plugin {
     $this->include_widgets_files();
 
     // Register Widgets
-    \Elementor\Plugin::instance()->widgets_manager->register_widget_type( new Widgets\Form() );
-  }
-
-  public function register_categories( $elements_manager ) {
-    $elements_manager->add_category(
-      'pardotmarketing',
-      [
-        'title' => __( 'Pardot Marketing', 'pardotmarketing' ),
-        'icon' => 'fab fa-wpforms',
-      ]
-    );
+    \Elementor\Plugin::instance()->widgets_manager->register_widget_type( new Widgets\FormHandler() );
   }
 
   /**
@@ -107,11 +103,8 @@ class Plugin {
 
     // Register widgets
     add_action( 'elementor/widgets/widgets_registered', [ $this, 'register_widgets' ] );
-
-    // Add widget categories
-    add_action( 'elementor/elements/categories_registered', [ $this, 'register_categories' ] );
   }
 }
 
 // Instantiate Plugin Class
-Plugin::instance();
+PardotMarketing_Widgets::instance();

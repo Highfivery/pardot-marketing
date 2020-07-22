@@ -1,15 +1,19 @@
 <?php
 /**
- * Pardot Marketing
+ * Pardot Marketing WordPress Plugin
  *
- * @author            Ben Marshall
- * @license           GPL-2.0-or-later
+ * @package    PardotMarketing
+ * @subpackage WordPress
+ * @since      1.0.0
+ * @author     Ben Marshall
+ * @copyright  2020 Ben Marshall
+ * @license    GPL-2.0-or-later
  *
  * @wordpress-plugin
  * Plugin Name:       Pardot Marketing
- * Plugin URI:        https://benmarshall.me
- * Description:       Provides true integration between WordPress sites and Pardot. Supports Elementor and inline Pardot forms.
- * Version:           1.0.1
+ * Plugin URI:        https://benmarshall.me/pardot-marketing
+ * Description:       Provides integration between WordPress and Pardot. Supports Elementor and Pardot forms, allowing you to customize styling to match your site.
+ * Version:           1.0.0
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Ben Marshall
@@ -19,23 +23,26 @@
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  */
 
+/**
+ * Security Note: Blocks direct access to the plugin PHP files.
+ */
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
-if ( ! defined( 'PARDOTMARKETING_PLUGIN' ) ) {
-  define( 'PARDOTMARKETING_PLUGIN', __FILE__ );
-}
+// Define plugin constants
+define( 'PARDOT_MARKETING', __FILE__ );
+define( 'PARDOT_MARKETING_VERSION', '1.0.0' );
 
 /**
- * Admin interface
+ * Helpers
  */
-require plugin_dir_path( __FILE__ ) . '/inc/admin.php';
+require plugin_dir_path( PARDOT_MARKETING ) . '/inc/helpers.php';
 
 /**
- * Elementor widgets
+ * Admin interface & functionality
  */
-require plugin_dir_path( __FILE__ ) . '/elementor/elementor.php';
+require plugin_dir_path( PARDOT_MARKETING ) . '/inc/admin.php';
 
 /**
- * Pardot class
+ * Elementor functionality
  */
-require plugin_dir_path( __FILE__ ) . '/classes/class-pardot-api.php';
+require plugin_dir_path( PARDOT_MARKETING ) . '/integrations/elementor/widgets.php';
