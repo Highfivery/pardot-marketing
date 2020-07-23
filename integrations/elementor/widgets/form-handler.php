@@ -733,7 +733,7 @@ class FormHandler extends Widget_Base {
             <?php if ( $settings['custom_messages'] == 'yes' && $settings['error_message'] ): ?>
               <p><?php echo $settings['error_message']; ?></p>
             <?php elseif( ! empty( $_REQUEST['errorMessage'] ) ): ?>
-              <p><?php echo $_REQUEST['errorMessage']; ?></p>
+              <p><?php echo sanitize_text_field( $_REQUEST['errorMessage'] ); ?></p>
             <?php else: ?>
               <p><?php _e( 'There was a problem submitting the form. Please try again.', 'pardotmarketing' ); ?></p>
             <?php endif; ?>
@@ -745,7 +745,7 @@ class FormHandler extends Widget_Base {
             // Get the field value
             $value = ! empty( $field['value'] ) ? $field['value'] : false;
             if ( ! empty( $_REQUEST[ $field['key'] ] ) ):
-              $value = $_REQUEST[ $field['key'] ];
+              $value = sanitize_text_field( $_REQUEST[ $field['key'] ] );
             endif;
 
             // Add the field container

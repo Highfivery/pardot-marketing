@@ -14,14 +14,12 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
  * Class Plugin
  *
  * Main Plugin class
- * @since 1.0.0
  */
 class PardotMarketing_Widgets {
 
   /**
    * Instance
    *
-   * @since 1.0.0
    * @access private
    * @static
    *
@@ -34,7 +32,6 @@ class PardotMarketing_Widgets {
    *
    * Ensures only one instance of the class is loaded or can be loaded.
    *
-   * @since 1.0.0
    * @access public
    *
    * @return PardotMarketing_Widgets An instance of the class.
@@ -52,7 +49,6 @@ class PardotMarketing_Widgets {
    *
    * Load required plugin core files.
    *
-   * @since 1.0.0
    * @access public
    */
   public function widget_scripts() {
@@ -65,7 +61,6 @@ class PardotMarketing_Widgets {
    *
    * Load widgets files
    *
-   * @since 1.0.0
    * @access private
    */
   private function include_widgets_files() {
@@ -77,7 +72,6 @@ class PardotMarketing_Widgets {
    *
    * Register new Elementor widgets.
    *
-   * @since 1.2.0
    * @access public
    */
   public function register_widgets() {
@@ -89,11 +83,31 @@ class PardotMarketing_Widgets {
   }
 
   /**
+   * Register Dynamic Tags
+   *
+   * @access public
+   */
+  public function register_dynamic_tags( $dynamic_tags ) {
+    // In our Dynamic Tag we use a group named request-variables so we need
+    // To register that group as well before the tag
+    \Elementor\Plugin::$instance->dynamic_tags->register_group( 'request-variables', [
+      'title' => __( 'Request Variables', 'pardotmarketing' )
+    ] );
+
+    // Include the Dynamic tag class file
+    include_once( __DIR__ . '/dynamic-tags/request-variables.php' );
+    include_once( __DIR__ . '/dynamic-tags/cookies.php' );
+
+    // Finally register the tag
+    $dynamic_tags->register_tag( 'Elementor_Request_Var_Tag' );
+    $dynamic_tags->register_tag( 'Elementor_Cookies_Tag' );
+  }
+
+  /**
    *  Plugin class constructor
    *
    * Register plugin action hooks and filters
    *
-   * @since 1.2.0
    * @access public
    */
   public function __construct() {
@@ -103,6 +117,9 @@ class PardotMarketing_Widgets {
 
     // Register widgets
     add_action( 'elementor/widgets/widgets_registered', [ $this, 'register_widgets' ] );
+
+    // Register dynamic tags
+    add_action( 'elementor/dynamic_tags/register_tags', [ $this, 'register_dynamic_tags' ] );
   }
 }
 

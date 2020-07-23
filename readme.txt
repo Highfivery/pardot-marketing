@@ -21,8 +21,11 @@ Pardot Marketing is a Pardot Form Handler-friendly & Elementor widgetized WordPr
 
 * Style Form Handlers to match your theme
 * Real-time user input validation
+* Create your own validation rules, including checking remote sources
 * Easy-to-use Form Handler Elementor widget
+* Inject URL parameters and browser cookies into form fields
 * Custom success & error messages
+* Integrate with any theme or plugin using custom actions & filters
 * more coming soon...
 
 Have a question, comment or suggestion? Feel free to [contact me](https://benmarshall.me/contact/?utm_source=wordpress.org&utm_medium=plugin&utm_campaign=pardot_marketing), follow me [on Twitter](https://twitter.com/bmarshall0511) or [visit my site](https://benmarshall.me/?utm_source=wordpress.org&utm_medium=plugin&utm_campaign=pardot_marketing).
@@ -35,6 +38,10 @@ Have a question, comment or suggestion? Feel free to [contact me](https://benmar
 For more information, see the [plugin’s website](https://benmarshall.me/pardot-marketing).
 
 == Frequently Asked Questions ==
+
+= How do I add my own field validation rules? =
+
+Pardot Marketing uses the [jQuery Validation plugin](https://jqueryvalidation.org/) to handle & add custom valdations. You can add your own by using the `pardotmarketing_form_handler_scripts_filter` to add your own JS that can extend the form rules or inject your own JS rules via the `pardotmarketing_form_handler_validation_options_filter_[form_id]` filter.
 
 = Where should Pardot's Form Handler success and error locations be?  =
 
