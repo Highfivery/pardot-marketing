@@ -1,11 +1,11 @@
-=== Pardot Marekting ===
+=== Pardot Marketing ===
 Contributors: bmarshall511
 Tags: pardot, marketing, elementor, elementor widget
 Donate link: https://benmarshall.me/donate/?utm_source=pardot_marketing&utm_medium=wordpress_repo&utm_campaign=donate
 Requires at least: 5.2
 Tested up to: 5.4.2
 Requires PHP: 7.1
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GNU GPLv3
 License URI: https://choosealicense.com/licenses/gpl-3.0/
 
