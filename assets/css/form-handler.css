@@ -3,7 +3,8 @@
   flex-wrap: wrap;
 }
 
-.pardotmarketing-form-handler-input {
+.pardotmarketing-form-handler-input,
+.pardotmarketing-form-handler-select {
   margin: 0;
 }
 
