@@ -5,7 +5,7 @@ Donate link: https://benmarshall.me/donate/?utm_source=pardot_marketing&utm_medi
 Requires at least: 5.2
 Tested up to: 5.4.2
 Requires PHP: 7.1
-Stable tag: 4.3.8
+Stable tag: 1.0.0
 License: GNU GPLv3
 License URI: https://choosealicense.com/licenses/gpl-3.0/
 
@@ -19,12 +19,13 @@ Pardot Marketing is a Pardot Form Handler-friendly & Elementor widgetized WordPr
 
 = Plugin Features =
 
+* Easy-to-use Form Handler Elementor widget
 * Style Form Handlers to match your theme
 * Real-time user input validation
 * Create your own validation rules, including checking remote sources
-* Easy-to-use Form Handler Elementor widget
-* Inject URL parameters and browser cookies into form fields
-* Custom success & error messages
+* Pre-defined country select dropdown available
+* Inject URL parameters and browser cookies into form fields (e.g. utm_source, utm_campaign, etc)
+* Custom error & success messages with the ability to hide the form after success
 * Integrate with any theme or plugin using custom actions & filters
 * more coming soon...
 
@@ -50,7 +51,11 @@ You can either create your own pages to direct the user's to a success or error 
 = What action hooks are available? =
 
 * `pardotmarketing_before_form_handler` - Fires before output of a Form Handler Elementor widget.
+* `pardotmarketing_pre_form` - Fires right before the opening `form` element in the Form Handler Elementor widgets.
 * `pardotmarketing_form` - Fires right after the opening `form` element in the Form Handler Elementor widgets.
+* `pardotmarketing_pre_error_msg` - Fires before output of the error message notification.
+* `pardotmarketing_error_msg` - Fires right after the opening tag of the error message notification.
+* `pardotmarketing_error_post_msg` - Fires at the end of the error message notification, before the closing tag.
 
 = What filters are available? =
 

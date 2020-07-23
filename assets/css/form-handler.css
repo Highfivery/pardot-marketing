@@ -14,3 +14,7 @@
   padding: 0.8em 2em;
   transition: all 0.3s;
 }
+
+.pardotmarketing-form-handler-form-is-submitting {
+  pointer-events: none;
+}

@@ -98,7 +98,6 @@ Class Elementor_Cookies_Tag extends \Elementor\Core\DynamicTags\Tag {
       return;
     }
 
-		$value = $_COOKIE[ $param_name ];
-		echo wp_kses_post( $value );
+		echo wp_kses_post( $_COOKIE[ $param_name ] );
 	}
 }

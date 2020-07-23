@@ -167,9 +167,7 @@ final class Pardot_Marketing_Elementor {
    * @access public
    */
   public function admin_notice_minimum_php_version() {
-    if ( isset( $_GET['activate'] ) ) {
-      unset( $_GET['activate'] );
-    }
+    deactivate_plugins( plugin_basename( PARDOT_MARKETING ) );
 
     $message = sprintf(
       /* translators: 1: Plugin name 2: PHP 3: Required PHP version */
