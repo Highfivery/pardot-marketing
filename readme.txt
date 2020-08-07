@@ -5,7 +5,7 @@ Donate link: https://benmarshall.me/donate/?utm_source=pardot_marketing&utm_medi
 Requires at least: 5.2
 Tested up to: 5.4.2
 Requires PHP: 7.1
-Stable tag: 1.0.1
+Stable tag: 1.1.0
 License: GNU GPLv3
 License URI: https://choosealicense.com/licenses/gpl-3.0/
 
@@ -19,6 +19,8 @@ Pardot Marketing is a Pardot Form Handler-friendly & Elementor widgetized WordPr
 
 = Plugin Features =
 
+* Custom Pardot user roles & capabilites to control access (see FAQ)
+* View Pardot prospects on-site
 * Easy-to-use Form Handler Elementor widget
 * Style Form Handlers to match your theme
 * Real-time user input validation
@@ -39,6 +41,14 @@ Have a question, comment or suggestion? Feel free to [contact me](https://benmar
 For more information, see the [plugin’s website](https://benmarshall.me/pardot-marketing).
 
 == Frequently Asked Questions ==
+
+= What user roles are available? =
+
+* Pardot Administrator (<code>pardotmarketing_admin</code>) - Inherits WP admin & all Pardot Marketing capabilities
+
+= What user capabilites are there? =
+
+* <code>pardotmarketing_read_prospects</code> - Allows access to the Pardot Prospects admin screen
 
 = How do I add my own field validation rules? =
 
@@ -65,6 +75,10 @@ You can either create your own pages to direct the user's to a success or error 
 * `pardotmarketing_form_handler_validation_options_filter_[form_id]` - Modifies/adds to the default [jQuery Validation](https://jqueryvalidation.org/) form options. [form_id] should be the value from the form `Form ID` field.
 
 == Changelog ==
+
+= 1.1.0 =
+
+* Added Prospects & Forms admin dashboard with data pulled from the Pardot API
 
 = 1.0.0 =
 

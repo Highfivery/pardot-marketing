@@ -8,16 +8,95 @@
 
 function pardotmarketing_admin_menu() {
   // Not currently being used
-  /*add_menu_page(
-    __( 'Pardot Marketing Dashboard', 'pardotmarketing' ),
+  add_menu_page(
+    __( 'Pardot Marketing Settings', 'pardotmarketing' ),
     __( 'Pardot Marketing', 'pardotmarketing' ),
     'manage_options',
     'pardot-marketing',
     'pardotmarketing_dashboard',
     'dashicons-cloud'
-  );*/
+  );
+
+  add_submenu_page(
+    'pardot-marketing',
+    __( 'Pardot Marketing Settings', 'wpzerospam' ),
+    __( 'Settings', 'wpzerospam' ),
+    'manage_options',
+    'pardot-marketing',
+    'pardotmarketing_dashboard'
+  );
+
+  add_submenu_page(
+    'pardot-marketing',
+    __( 'Pardot Prospects', 'wpzerospam' ),
+    __( 'Prospects', 'wpzerospam' ),
+    'pardotmarketing_read_prospects',
+    'pardot-marketing-prospects',
+    'pardotmarketing_prospects_page'
+  );
+
+  add_submenu_page(
+    'pardot-marketing',
+    __( 'Pardot Forms', 'wpzerospam' ),
+    __( 'Forms', 'wpzerospam' ),
+    'pardotmarketing_read_forms',
+    'pardot-marketing-forms',
+    'pardotmarketing_forms_page'
+  );
 }
 add_action( 'admin_menu', 'pardotmarketing_admin_menu' );
+
+function pardotmarketing_forms_page() {
+  if ( ! current_user_can( 'pardotmarketing_read_prospects' ) ) { return; }
+  ?>
+  <div class="wrap">
+    <h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
+    <?php
+    /**
+     * Log table
+     */
+    require plugin_dir_path( PARDOT_MARKETING ) . '/classes/class-pardot-forms-table.php';
+
+    $table_data = new PardotMarketing_Forms_Table();
+    $table_data->prepare_items();
+    ?>
+    <?php /*form method="GET">
+      <input type="hidden" name="page" value="pardot-marketing-prospects" />
+      <?php $table_data->search_box( __( 'Search', 'pardotmarketing' ), 'pardotprospects' ); ?>
+    </form>*/ ?>
+    <form id="log-table" method="post">
+      <input type="hidden" name="paged" value="1" />
+      <?php $table_data->display(); ?>
+    </form>
+  </div>
+  <?php
+}
+
+function pardotmarketing_prospects_page() {
+  if ( ! current_user_can( 'pardotmarketing_read_prospects' ) ) { return; }
+  ?>
+  <div class="wrap">
+    <h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
+    <div class="pardotmarketing-callout"><p><?php _e( '<strong>Pardot API Data Limitations</strong><br />This data is pulled directly from the <a href="http://developer.pardot.com/" target="_blank" rel="noopener noreferrer">Pardot API</a> (v4) and is only as accurate as what the API returns. There\'s a <strong>known issue with the <code>total_results</code> number Pardot returns</strong> and it not reflecting the actual number of results (prospects) it returns. This causes the table pager to inaccurately display the number of actual pages.', 'pardotmarketing' ); ?></p></div>
+    <?php
+    /**
+     * Log table
+     */
+    require plugin_dir_path( PARDOT_MARKETING ) . '/classes/class-pardot-prospects-table.php';
+
+    $table_data = new PardotMarketing_Prospects_Table();
+    $table_data->prepare_items();
+    ?>
+    <?php /*form method="GET">
+      <input type="hidden" name="page" value="pardot-marketing-prospects" />
+      <?php $table_data->search_box( __( 'Search', 'pardotmarketing' ), 'pardotprospects' ); ?>
+    </form>*/ ?>
+    <form id="log-table" method="post">
+      <input type="hidden" name="paged" value="1" />
+      <?php $table_data->display(); ?>
+    </form>
+  <?php
+}
 
 function pardotmarketing_dashboard() {
   if ( ! current_user_can( 'manage_options' ) ) { return; }
@@ -41,9 +120,7 @@ function pardotmarketing_dashboard() {
 }
 
 function pardotmarketing_validate_options( $input ) {
-  if(  ! function_exists( 'is_plugin_active' ) ) {
-    require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-  }
+  if ( empty( $input['api_url'] ) ) { $input['api_url'] = 'https://pi.pardot.com/api'; }
 
   return $input;
  }
@@ -58,7 +135,6 @@ function pardotmarketing_admin_action_links( $actions, $plugin_file, $plugin_dat
 
   return array_merge( $links, $actions );
 }
-
 
 function pardotmarketing_admin_init() {
   if(  ! function_exists( 'is_plugin_active' ) ) {
@@ -75,36 +151,40 @@ function pardotmarketing_admin_init() {
   add_settings_section( 'pardotmarketing_general_settings', __( 'General Settings', 'pardotmarketing' ), 'pardotmarketing_general_settings_cb', 'pardotmarketing' );
 
   // API URL (not currently being used)
-  /*add_settings_field( 'api_url', __( 'API URL', 'pardot' ), 'pardotmarketing_field_cb', 'pardotmarketing', 'pardotmarketing_general_settings', [
-    'label_for' => 'api_url',
-    'type'      => 'url',
-    'desc'      => __( 'Enter the Pardot API endpoint.', 'sparkcognition'),
-    'class'     => 'regular-text'
-  ]);*/
+  add_settings_field( 'api_url', __( 'API URL', 'pardot' ), 'pardotmarketing_field_cb', 'pardotmarketing', 'pardotmarketing_general_settings', [
+    'label_for'   => 'api_url',
+    'type'        => 'url',
+    'placeholder' => 'https://pi.pardot.com/api',
+    'desc'        => __( 'Enter the Pardot API endpoint.', 'pardotmarketing'),
+    'class'       => 'regular-text'
+  ]);
 
   // API email (not currently being used)
-  /*add_settings_field( 'api_email', __( 'API Email', 'pardot' ), 'pardotmarketing_field_cb', 'pardotmarketing', 'pardotmarketing_general_settings_cb', [
-    'label_for' => 'api_email',
-    'type'      => 'email',
-    'desc'      => __( 'Enter the Pardot API email.', 'sparkcognition'),
-    'class'     => 'regular-text'
-  ]);*/
+  add_settings_field( 'api_email', __( 'API Email', 'pardot' ), 'pardotmarketing_field_cb', 'pardotmarketing', 'pardotmarketing_general_settings', [
+    'label_for'   => 'api_email',
+    'type'        => 'email',
+    'placeholder' => 'Pardot user email address',
+    'desc'        => __( 'Enter the Pardot API email.', 'pardotmarketing'),
+    'class'       => 'regular-text'
+  ]);
 
   // API password (not currently being used)
-  /*add_settings_field( 'api_password', __( 'Password', 'pardot' ), 'pardotmarketing_field_cb', 'pardotmarketing', 'pardotmarketing_general_settings_cb', [
-    'label_for' => 'api_password',
-    'type'      => 'password',
-    'desc'      => __( 'Enter the Pardot API password.', 'sparkcognition'),
-    'class'     => 'regular-text'
-  ]);*/
+  add_settings_field( 'api_password', __( 'Password', 'pardot' ), 'pardotmarketing_field_cb', 'pardotmarketing', 'pardotmarketing_general_settings', [
+    'label_for'   => 'api_password',
+    'type'        => 'password',
+    'placeholder' => 'Pardot user password',
+    'desc'        => __( 'Enter the Pardot API password.', 'pardotmarketing'),
+    'class'       => 'regular-text'
+  ]);
 
   // API user key (not currently being used)
-  /*add_settings_field( 'api_user_key', __( 'User Key', 'pardot' ), 'pardotmarketing_field_cb', 'pardotmarketing', 'pardotmarketing_general_settings_cb', [
-    'label_for' => 'api_user_key',
-    'type'      => 'text',
-    'desc'      => __( 'Enter the Pardot API user key.', 'sparkcognition'),
-    'class'     => 'regular-text'
-  ]);*/
+  add_settings_field( 'api_user_key', __( 'User Key', 'pardot' ), 'pardotmarketing_field_cb', 'pardotmarketing', 'pardotmarketing_general_settings', [
+    'label_for'   => 'api_user_key',
+    'type'        => 'text',
+    'placeholder' => 'Pardot API user key',
+    'desc'        => __( 'Enter the Pardot API user key.', 'pardotmarketing'),
+    'class'       => 'regular-text'
+  ]);
 }
 add_action( 'admin_init', 'pardotmarketing_admin_init' );
 

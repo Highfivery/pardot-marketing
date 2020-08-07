@@ -1,4 +1,11 @@
 <?php
+/**
+ * Registers Elementor dynamic tags
+ *
+ * @package PardotMarketing
+ * @since 1.0.0
+ */
+
 Class Elementor_Request_Var_Tag extends \Elementor\Core\DynamicTags\Tag {
 
 	/**

@@ -19,3 +19,9 @@
 .pardotmarketing-form-handler-form-is-submitting {
   pointer-events: none;
 }
+
+label.pardotmarketing-form-handler-field-error {
+  color: red;
+  line-height: 1.2;
+  margin-top: 5px;
+}

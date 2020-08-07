@@ -225,7 +225,7 @@ class FormHandler extends Widget_Base {
 				'label' => __( 'Options', 'pardotmarketing' ),
 				'type' => \Elementor\Controls_Manager::TEXTAREA,
 				'rows' => 5,
-        'description' => __( 'Enter each option on a separate line. To differentiate between label and value, separate them with a pipe character ("|"). For example: First Name|f_name', 'pardotmarketing' ),
+        'description' => __( 'Enter each option on a separate line. To differentiate between value and label, separate them with a pipe character ("|"). For example: f_name|First Name', 'pardotmarketing' ),
         'conditions' => [
           'terms' => [
             [
@@ -600,7 +600,8 @@ class FormHandler extends Widget_Base {
 					'size' => 10,
 				],
 				'selectors' => [
-					'{{WRAPPER}} .pardotmarketing-form-handler-field' => 'padding-left: {{SIZE}}{{UNIT}}; padding-right: {{SIZE}}{{UNIT}};',
+          '{{WRAPPER}} .pardotmarketing-form-handler-field' => 'padding-left: {{SIZE}}{{UNIT}}; padding-right: {{SIZE}}{{UNIT}};',
+          '{{WRAPPER}} .pardotmarketing-form-handler-fields' => 'margin-left: -{{SIZE}}{{UNIT}}; margin-right: -{{SIZE}}{{UNIT}};',
 				],
 			]
     );
@@ -645,6 +646,30 @@ class FormHandler extends Widget_Base {
 			[
 				'label' => __( 'Button', 'pardotmarketing' ),
 				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+			]
+    );
+
+    $this->add_control(
+			'button_border_radius',
+			[
+				'label' => __( 'Border Radius', 'pardotmarketing' ),
+				'type' => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', '%', 'em', 'rem' ],
+				'selectors' => [
+					'{{WRAPPER}} .pardotmarketing-form-handler-button' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+    $this->add_control(
+			'button_text_padding',
+			[
+				'label' => __( 'Text Padding', 'pardotmarketing' ),
+				'type' => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', '%', 'em', 'rem' ],
+				'selectors' => [
+					'{{WRAPPER}} .pardotmarketing-form-handler-button' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
 			]
     );
 
@@ -730,30 +755,6 @@ class FormHandler extends Widget_Base {
 
     $this->end_controls_tab();
 
-    $this->add_control(
-			'button_border_radius',
-			[
-				'label' => __( 'Border Radius', 'pardotmarketing' ),
-				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%', 'em', 'rem' ],
-				'selectors' => [
-					'{{WRAPPER}} .pardotmarketing-form-handler-button' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				],
-			]
-		);
-
-    $this->add_control(
-			'button_text_padding',
-			[
-				'label' => __( 'Text Padding', 'pardotmarketing' ),
-				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%', 'em', 'rem' ],
-				'selectors' => [
-					'{{WRAPPER}} .pardotmarketing-form-handler-button' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				],
-			]
-    );
-
     $this->end_controls_tabs();
 
     $this->end_controls_section();
@@ -830,20 +831,13 @@ class FormHandler extends Widget_Base {
 
             // Add the field container
             if( $field['type'] != 'hidden' ):
-              ?>
-              <div class="pardotmarketing-form-handler-field elementor-repeater-item-<?php echo $field['_id']; ?>">
-            <?php endif; ?>
-
-            <?php
-            // Add the field label
-            if( $field['type'] != 'hidden' ):
               $label_classes = [ 'pardotmarketing-form-handler-label' ];
               ?>
-              <label class="pardotmarketing-form-handler-label" for="pardotmarketing-form-handler-<?php echo esc_attr( $field['key'] ); ?>">
-                <?php echo $field['label']; ?>
-              </label>
+              <div class="pardotmarketing-form-handler-field elementor-repeater-item-<?php echo $field['_id']; ?>">
+                <label class="pardotmarketing-form-handler-label" for="pardotmarketing-form-handler-<?php echo esc_attr( $field['key'] ); ?>">
+                  <?php echo $field['label']; ?>
+                </label>
             <?php endif; ?>
-
             <?php
             // Output the field
             switch( $field['type'] ):
@@ -1239,6 +1233,8 @@ class FormHandler extends Widget_Base {
             $forms.validate({
               <?php
               $options = apply_filters( 'pardotmarketing_form_handler_validation_options_filter_' . $settings['form_id'], [
+                'errorClass' => '"pardotmarketing-form-handler-field-error"',
+                'validClass' => '"pardotmarketing-form-handler-field-valid"',
                 'submitHandler' => 'function(form) {
                   $(form).addClass("pardotmarketing-form-handler-form-is-submitting");
                   $(form).attr("action", $(form).data("url"));
@@ -1252,7 +1248,7 @@ class FormHandler extends Widget_Base {
               if ( $options ):
                 foreach( $options as $key => $value ):
                   ?>
-                  '<?php echo $key; ?>': <?php echo $value; ?>
+                  '<?php echo $key; ?>': <?php echo $value; ?>,
                   <?php
                 endforeach;
               endif;
@@ -1281,7 +1277,181 @@ class FormHandler extends Widget_Base {
    */
   protected function _content_template() {
     ?>
+    <div class="pardotmarketing-form-handler">
 
+
+      <div class="pardotmarketing-form-handler-message pardotmarketing-form-handler-success">
+        <# if ( settings.custom_messages == 'yes' && settings.success_message ) { #>
+          <p>{{{ settings.success_message }}}</p>
+        <# } else { #>
+          <p>Your submission has been successfully sent.</p>
+        <# } #>
+      </div>
+
+      <form
+        class="pardotmarketing-form-handler-form"
+        method="post"
+        data-url="{{ settings.endpoint.url }}"
+        id="{{ settings.form_id }}"
+      >
+        <div class="pardotmarketing-form-handler-message pardotmarketing-form-handler-error">
+          <# if ( settings.custom_messages == 'yes' && settings.error_message ) { #>
+            <p>{{{ settings.error_message }}}</p>
+          <# } else { #>
+            <p>There was a problem submitting the form. Please try again.</p>
+          <# } #>
+        </div>
+
+        <div class="pardotmarketing-form-handler-fields">
+          <# if ( settings.fields.length ) { #>
+            <# _.each( settings.fields, function( field ) { #>
+              <# if( field.type != 'hidden' ) { #>
+                <div class="pardotmarketing-form-handler-field elementor-repeater-item-{{ field._id }}">
+                <label class="pardotmarketing-form-handler-label" for="pardotmarketing-form-handler-{{ field._id }}">
+                  {{{ field.label }}}
+                </label>
+              <# } #>
+
+              <# if( field.type == 'country' ) { #>
+                <select
+                  name="{{ field.key }}"
+                  class="pardotmarketing-form-handler-select"
+                >
+                  <# if( field.placeholder ) { #>
+                    <option value="">{{{ field.placeholder }}}</option>
+                  <# } #>
+                </select>
+              <# } #>
+
+              <# if( field.type == 'text' || field.type == 'tel' || field.type == 'email' || field.type == 'hidden' ) { #>
+                <input
+                  class="pardotmarketing-form-handler-input"
+                  type="{{ field.type }}"
+                  name="{{ field.key }}"
+                  id="pardotmarketing-form-handler-{{ field.key }}"
+                  <# if( field.minlength ) { #>
+                    minlength="{{ field.minlength }}"
+                  <# } #>
+                  <# if( field.maxlength ) { #>
+                    maxlength="{{ field.maxlength }}"
+                  <# } #>
+                  <# if( field.placeholder ) { #>
+                    placeholder="{{ field.placeholder }}"
+                  <# } #>
+                  <# if( field.value ) { #>
+                    value="{{ field.value }}"
+                  <# } #>
+                  <# if( field.required ) { #>
+                    required
+                  <# } #>
+                />
+              <# } #>
+
+              <# if( field.type == 'textarea' ) { #>
+                <textarea
+                  rows="{{ field.rows }}"
+                  class="pardotmarketing-form-handler-input"
+                  name="{{ field.key }}"
+                  id="pardotmarketing-form-handler-{{ field.key }}"
+                  <# if( field.minlength ) { #>
+                    minlength="{{ field.minlength }}"
+                  <# } #>
+                  <# if( field.maxlength ) { #>
+                    maxlength="{{ field.maxlength }}"
+                  <# } #>
+                  <# if( field.placeholder ) { #>
+                    placeholder="{{ field.placeholder }}"
+                  <# } #>
+                  <# if( field.required ) { #>
+                    required
+                  <# } #>
+                >{{{ field.value }}}</textarea>
+              <# } #>
+
+              <# if( field.type == 'select' ) { #>
+                <select
+                  name="{{ field.key }}"
+                  class="pardotmarketing-form-handler-select"
+                  <# if( field.required ) { #>
+                    required
+                  <# } #>
+                >
+                  <#
+                  var select_option = field.options.split("\n");
+                  #>
+                  <# _.each( select_option, function( opt ) { #>
+                    <#
+                    var option = opt.split("|");
+                    #>
+                    <option value="{{ option }}">{{{ option }}}</option>
+                  <# }); #>
+                </select>
+              <# } #>
+
+              <# if( field.type == 'checkbox' ) { #>
+                <#
+                var options_classes = [ "pardotmarketing-form-handler-options" ];
+                if ( field.inline == 'yes') {
+                  options_classes.push("pardotmarketing-form-handler-options-inline");
+                }
+                #>
+                <div class="{{ options_classes.join() }}">
+                  <#
+                  var options = field.options.split("\n");
+                  var name = field.key;
+
+                  if ( options.length > 1 ) {
+                    name = name + "[]";
+                  }
+
+                  var option_count = 0;
+                  #>
+                  <# _.each( options, function( opt ) { #>
+                    <#
+                    option_count++;
+                    var option = opt.split("|");
+
+                    if ( option[1] ) {
+                      var value = option[0];
+                      var keyValue = option[1];
+                    } else {
+                      var value = option[0];
+                      var keyValue = option[0];
+                    }
+
+                    var option_id = 'pardotmarketing-form-handler-' + keyValue + '-' + option_count;
+                    #>
+                    <div class="pardotmarketing-form-handler-option">
+                      <input
+                        type="{{ field.type }}"
+                        value="{{ keyValue }}"
+                        id="{{ option_id }}"
+                        <# if( field.value == keyValue ) { #>checked="checked"<# } #>
+                        name="{{ name }}"
+                        class="pardotmarketing-form-handler-option-input"
+                      >
+                      <label for="{{ option_id }}">
+                        {{ keyValue }}
+                      </label>
+                    </div>
+                  <# }); #>
+                </div>
+              <# } #>
+
+              <# if( field.type != 'hidden' ) { #>
+                </div>
+              <# } #>
+            <# }); #>
+            <div class="pardotmarketing-form-handler-field pardotmarketing-form-handler-field-submit">
+              <button
+                type="submit"
+                class="pardotmarketing-form-handler-button"
+              >{{{ settings.submit_text }}}</button>
+            </div>
+          <# } #>
+        </div>
+      </form>
+    </div>
     <?php
   }
 }
