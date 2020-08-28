@@ -771,7 +771,12 @@ class FormHandler extends Widget_Base {
    */
   protected function render() {
     $settings = $this->get_settings_for_display();
-    if ( ! $settings['fields'] ) { return; }
+		if ( ! $settings['fields'] ) { return; }
+
+		$widget_id = $this->get_id();
+		if ( ! empty( $settings['form_id'] ) ) {
+			$widget_id = $settings['form_id'];
+		}
 
     // Get the spacing
     $column_spacing = $settings['column_gap']['size'] / 2;
@@ -801,7 +806,7 @@ class FormHandler extends Widget_Base {
         class="pardotmarketing-form-handler-form"
         method="post"
         data-url="<?php echo esc_url( $settings['endpoint']['url'] ); ?>"
-        <?php if ( ! empty( $settings['form_id'] ) ): ?>id="<?php echo esc_attr( $settings['form_id'] ); ?>"<?php endif; ?>
+        id="<?php echo esc_attr( $widget_id ); ?>"
       >
         <?php do_action('pardotmarketing_form'); ?>
         <?php
@@ -1217,49 +1222,37 @@ class FormHandler extends Widget_Base {
       </form>
       <script>
       (function( $ ) {
-        'use strict';
+				'use strict';
 
-        var PardotMarketingForms = {
-          init: function() {
-            var $forms = $('.pardotmarketing-form-handler-form');
+				$(function() {
+					var $form = $('#<?php echo esc_attr( $widget_id ); ?>');
+					$form.attr( 'data-pardot-marketing', 'processed' );
 
-            if ( ! $forms.length ) {
-              console.log( 'No Pardot Form Handler forms (.pardotmarketing-form-handler-form) could be found on the page.' );
-            } else {
-              console.log( $forms.length + ' Pardot Form Handler form(s) (.pardotmarketing-form-handler-form) found on the page.' );
-            }
+					$form.validate({
+						<?php
+						$options = apply_filters( 'pardotmarketing_form_handler_validation_options_filter_' . $widget_id, [
+							'errorClass' => '"pardotmarketing-form-handler-field-error"',
+							'validClass' => '"pardotmarketing-form-handler-field-valid"',
+							'submitHandler' => 'function(form) {
+								$(form).addClass("pardotmarketing-form-handler-form-is-submitting");
+								$(form).attr("action", $(form).data("url"));
 
-            $forms.attr( 'data-pardot-marketing', 'processed' );
-            $forms.validate({
-              <?php
-              $options = apply_filters( 'pardotmarketing_form_handler_validation_options_filter_' . $settings['form_id'], [
-                'errorClass' => '"pardotmarketing-form-handler-field-error"',
-                'validClass' => '"pardotmarketing-form-handler-field-valid"',
-                'submitHandler' => 'function(form) {
-                  $(form).addClass("pardotmarketing-form-handler-form-is-submitting");
-                  $(form).attr("action", $(form).data("url"));
+								$(".pardotmarketing-form-handler-button", $(form)).html("' . $settings['submit_text_processing'] . '");
 
-                  $(".pardotmarketing-form-handler-button", $(form)).html("' . $settings['submit_text_processing'] . '");
+								form.submit();
+							}'
+						]);
 
-                  form.submit();
-                }'
-              ]);
-
-              if ( $options ):
-                foreach( $options as $key => $value ):
-                  ?>
-                  '<?php echo $key; ?>': <?php echo $value; ?>,
-                  <?php
-                endforeach;
-              endif;
-              ?>
-            });
-          },
-        };
-
-        $(function() {
-          PardotMarketingForms.init();
-        });
+						if ( $options ):
+							foreach( $options as $key => $value ):
+								?>
+								'<?php echo $key; ?>': <?php echo $value; ?>,
+								<?php
+							endforeach;
+						endif;
+						?>
+					});
+				});
       })(jQuery);
       </script>
     </div>
