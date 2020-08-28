@@ -5,7 +5,7 @@ Donate link: https://benmarshall.me/donate/?utm_source=pardot_marketing&utm_medi
 Requires at least: 5.2
 Tested up to: 5.4.2
 Requires PHP: 7.1
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GNU GPLv3
 License URI: https://choosealicense.com/licenses/gpl-3.0/
 
@@ -75,6 +75,10 @@ You can either create your own pages to direct the user's to a success or error 
 * `pardotmarketing_form_handler_validation_options_filter_[form_id]` - Modifies/adds to the default [jQuery Validation](https://jqueryvalidation.org/) form options. [form_id] should be the value from the form `Form ID` field.
 
 == Changelog ==
+
+= 1.1.1 =
+
+* Fix - Bug when multiple Pardot Form Handler widgets are on the page.
 
 = 1.1.0 =
 
