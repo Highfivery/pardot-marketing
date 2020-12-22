@@ -13,7 +13,7 @@
  * Plugin Name:       Pardot Marketing
  * Plugin URI:        https://benmarshall.me/pardot-marketing
  * Description:       Provides integration between WordPress and Pardot. Supports Elementor and Pardot forms, allowing you to customize styling to match your site.
- * Version:           1.1.1
+ * Version:           1.1.2
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Ben Marshall
@@ -30,7 +30,7 @@ defined( 'ABSPATH' ) || die();
 
 // Define plugin constants
 define( 'PARDOT_MARKETING', __FILE__ );
-define( 'PARDOT_MARKETING_VERSION', '1.1.1' );
+define( 'PARDOT_MARKETING_VERSION', '1.1.2' );
 
 if ( ! function_exists( 'pardotmarketing_install' ) ) {
   function pardotmarketing_install() {
