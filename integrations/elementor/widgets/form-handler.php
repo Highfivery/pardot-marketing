@@ -458,6 +458,18 @@ class FormHandler extends Widget_Base {
 			]
 		);
 
+		$this->add_control(
+			'show_label',
+			array(
+				'label'        => __( 'Label', 'pardotmarketing' ),
+				'type'         => \Elementor\Controls_Manager::SWITCHER,
+				'label_on'     => __( 'Show', 'pardotmarketing' ),
+				'label_off'    => __( 'Hide', 'pardotmarketing' ),
+				'return_value' => 'yes',
+				'default'      => 'yes',
+			)
+		);
+
 		$this->end_controls_section();
 
 		$this->start_controls_section(
@@ -870,7 +882,7 @@ class FormHandler extends Widget_Base {
 							$label_classes = [ 'pardotmarketing-form-handler-label' ];
 							?>
 							<div class="pardotmarketing-form-handler-field elementor-repeater-item-<?php echo $field['_id']; ?>">
-								<label class="pardotmarketing-form-handler-label" for="pardotmarketing-form-handler-<?php echo esc_attr( $field['key'] ); ?>">
+								<label class="pardotmarketing-form-handler-label <?php if ( ! $settings['show_label'] ) : ?> pardotmarketing-screen-reader-text<?php endif; ?>" for="pardotmarketing-form-handler-<?php echo esc_attr( $field['key'] ); ?>">
 									<?php echo $field['label']; ?>
 								</label>
 						<?php endif; ?>
