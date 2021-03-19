@@ -76,6 +76,10 @@ You can either create your own pages to direct the user's to a success or error 
 
 == Changelog ==
 
+= 1.1.3 =
+
+* [Resolves #5](https://github.com/bmarshall511/pardot-marketing/issues/5). Added border styling options to the form handler submit button.
+
 = 1.1.2 =
 
 * Enhancement - Ability to select the submitted value for country select fields (i.e. country name or abbr.)

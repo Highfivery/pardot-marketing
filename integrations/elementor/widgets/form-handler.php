@@ -671,6 +671,15 @@ class FormHandler extends Widget_Base {
 			]
 		);
 
+		$this->add_group_control(
+			\Elementor\Group_Control_Border::get_type(),
+			array(
+				'name'     => 'border',
+				'label'    => __( 'Border', 'pardotmarketing' ),
+				'selector' => '{{WRAPPER}} .pardotmarketing-form-handler-button',
+			)
+		);
+
 		$this->add_control(
 			'button_border_radius',
 			[
