@@ -80,6 +80,7 @@ You can either create your own pages to direct the user's to a success or error 
 
 * [Resolves #5](https://github.com/bmarshall511/pardot-marketing/issues/5). Added border styling options to the form handler submit button.
 * [Resolves #4](https://github.com/bmarshall511/pardot-marketing/issues/4). Added ability to hide field labels.
+* [Resolves #3](https://github.com/bmarshall511/pardot-marketing/issues/3). Added radio field option to the form handlers.
 
 = 1.1.2 =
 

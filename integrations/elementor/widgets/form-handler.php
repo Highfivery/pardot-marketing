@@ -192,6 +192,7 @@ class FormHandler extends Widget_Base {
 					'url'      => __( 'URL', 'pardotmarketing' ),
 					'tel'      => __( 'Telephone', 'pardotmarketing' ),
 					'checkbox' => __( 'Checkbox', 'pardotmarketing' ),
+					'radio'    => __( 'Radio', 'pardotmarketing' ),
 					'select'   => __( 'Select', 'pardotmarketing' ),
 					'country'  => __( 'Country', 'pardotmarketing' ),
 					'hidden'   => __( 'Hidden', 'pardotmarketing' ),
@@ -232,7 +233,7 @@ class FormHandler extends Widget_Base {
 							'name' => 'type',
 							'operator' => 'in',
 							'value' => [
-								'select', 'checkbox'
+								'select', 'checkbox', 'radio'
 							],
 						],
 					],
@@ -252,7 +253,7 @@ class FormHandler extends Widget_Base {
 							'name' => 'type',
 							'operator' => '!in',
 							'value' => [
-								'hidden', 'checkbox', 'select'
+								'hidden', 'checkbox', 'select', 'radio'
 							],
 						],
 					],
@@ -309,7 +310,7 @@ class FormHandler extends Widget_Base {
 							'name' => 'type',
 							'operator' => 'in',
 							'value' => [
-								'checkbox'
+								'checkbox', 'radio'
 							],
 						],
 					],
@@ -1217,24 +1218,25 @@ class FormHandler extends Widget_Base {
 								<?php
 							break;
 							case 'checkbox':
-								$options_classes = [ 'pardotmarketing-form-handler-options' ];
+							case 'radio':
+								$options_classes = array( 'pardotmarketing-form-handler-options' );
 
-								if ( $field['inline'] == 'yes' ):
+								if ( 'yes' === $field['inline'] ) :
 									$options_classes[] = 'pardotmarketing-form-handler-options-inline';
 								endif;
 								?>
-								<div class="<?php echo implode( ' ', $options_classes ); ?>">
+								<div class="<?php echo esc_attr( implode( ' ', $options_classes ) ); ?>">
 									<?php
 									$options = explode( "\n", $field['options'] );
 									$name    = $field['key'];
 
-									// If more than one option, send as an array
-									if ( count( $options ) > 1 ):
+									// If more than one option, send as an array.
+									if ( count( $options ) > 1 && 'radio' !== $field['type'] ) :
 										$name = $field['key'] . '[]';
 									endif;
 
 									$option_count = 0;
-									foreach( $options as $key => $val ):
+									foreach ( $options as $key => $val ) :
 										$option_count++;
 										$option    = explode( '|', $val );
 										$option_id = 'pardotmarketing-form-handler-' . esc_attr( $field['key'] . '-' . $option_count );
