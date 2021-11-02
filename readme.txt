@@ -3,42 +3,37 @@ Contributors: bmarshall511
 Tags: pardot, marketing, elementor, elementor widget
 Donate link: https://benmarshall.me/donate/?utm_source=pardot_marketing&utm_medium=wordpress_repo&utm_campaign=donate
 Requires at least: 5.2
-Tested up to: 5.7
+Tested up to: 5.8.1
 Requires PHP: 7.3
-Stable tag: 1.1.3
+Stable tag: 1.1.4
 License: GNU GPLv3
 License URI: https://choosealicense.com/licenses/gpl-3.0/
 
-Pardot Marketing is a Pardot Form Handler-friendly & Elementor widgetized WordPress plugin. Say good-bye to those constraining Form Handler embeds!
+Annoyed with Pardot's constraining form handler embeds? The Pardot Marketing WordPress plugin allows you to easily add styled forms to your site — and more.
 
 == Description ==
 
-Pardot Marketing is the Pardot plugin on steroids. It provides sites the ability to add completely customizable [Form Handlers](https://www.pardot.com/training/form-handlers-15-introduction-to-form-handlers/) vs. the annoying and constraining embeds with iframes. Easily add as many fields as you need, structure any way you'd like, style to fit your design, then match them to the Pardot Form Field Mappings in the Form Handler settings.
+Pardot's [form handler embeds](https://www.pardot.com/training/form-handlers-15-introduction-to-form-handlers/) make it difficult to match your site's look and feel. That's where the Pardot Marketing WordPress comes in. Quickly add site-matching forms with custom validation rules using an Elementor widget. Say 'good-bye' to those annoying & ugly Form Handler embeds.
 
-Pardot Marketing is a Pardot Form Handler-friendly & Elementor widgetized WordPress plugin. Say good-bye to those annoying & ugly Form Handler embeds.
+= Features Include =
 
-= Plugin Features =
-
-* Custom Pardot user roles & capabilites to control access (see FAQ)
-* View Pardot prospects on-site
-* Easy-to-use Form Handler Elementor widget
-* Style Form Handlers to match your theme
-* Real-time user input validation
-* Create your own validation rules, including checking remote sources
-* Pre-defined country select dropdown available
-* Inject URL parameters and browser cookies into form fields (e.g. utm_source, utm_campaign, etc)
-* Custom error & success messages with the ability to hide the form after success
-* Integrate with any theme or plugin using custom actions & filters
-* more coming soon...
-
-Have a question, comment or suggestion? Feel free to [contact me](https://benmarshall.me/contact/?utm_source=wordpress.org&utm_medium=plugin&utm_campaign=pardot_marketing), follow me [on Twitter](https://twitter.com/bmarshall0511) or [visit my site](https://benmarshall.me/?utm_source=wordpress.org&utm_medium=plugin&utm_campaign=pardot_marketing).
+* Control access with Pardot-specific user roles
+* View Pardot prospects from your WordPress dashboard
+* Customize form handlers to match the look of your site
+* Easily add forms via an Elementor widget
+* Provides real-time field validation
+* Create custom field validation rules
+* Easy-to-add pre-configured form fields
+* Create dynamic, pre-populated form fields
+* Customize success & error messages
+* Ability to integrate into any theme or plugin
 
 == Installation ==
 
 1. Upload the entire pardot-marketing folder to the `/wp-content/plugins/` directory.
 2. Activate the plugin through the Plugins screen (Plugins > Installed Plugins).
 
-For more information, see the [plugin’s website](https://benmarshall.me/pardot-marketing).
+For more information, see the [plugin’s website](https://www.highfivery.com/projects/pardot-wordpress-plugin/).
 
 == Frequently Asked Questions ==
 
@@ -53,10 +48,6 @@ For more information, see the [plugin’s website](https://benmarshall.me/pardot
 = How do I add my own field validation rules? =
 
 Pardot Marketing uses the [jQuery Validation plugin](https://jqueryvalidation.org/) to handle & add custom valdations. You can add your own by using the `pardotmarketing_form_handler_scripts_filter` to add your own JS that can extend the form rules or inject your own JS rules via the `pardotmarketing_form_handler_validation_options_filter_[form_id]` filter.
-
-= Where should Pardot's Form Handler success and error locations be?  =
-
-You can either create your own pages to direct the user's to a success or error result, or redirect them back to the page where the Form Handler is to display custom messages.
 
 = What action hooks are available? =
 
@@ -75,6 +66,11 @@ You can either create your own pages to direct the user's to a success or error 
 * `pardotmarketing_form_handler_validation_options_filter_[form_id]` - Modifies/adds to the default [jQuery Validation](https://jqueryvalidation.org/) form options. [form_id] should be the value from the form `Form ID` field.
 
 == Changelog ==
+
+= 1.1.4 =
+
+* [Fix] Missing Elementor widget icon
+* [Feature] reCAPTCHA v3 integration
 
 = 1.1.3 =
 

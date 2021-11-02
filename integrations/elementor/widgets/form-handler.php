@@ -47,7 +47,7 @@ class FormHandler extends Widget_Base {
 	 * @return string Widget icon.
 	 */
 	public function get_icon() {
-		return 'fab fa-salesforce';
+		return 'eicon-form-horizontal';
 	}
 
 	/**
@@ -171,53 +171,66 @@ class FormHandler extends Widget_Base {
 
 		$repeater->add_control(
 			'key',
-			[
-				'label' => __( 'External Field Name', 'pardotmarketing' ),
-				'type' => \Elementor\Controls_Manager::TEXT,
+			array(
+				'label'       => __( 'External Field Name', 'pardotmarketing' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
 				'placeholder' => __( 'i.e. first_name', 'pardotmarketing' ),
-				'description' => __( "Found of the form handler summary page under 'Form Field Mappings'", 'pardotmarketing' )
-			]
+				'description' => __( "Found of the form handler summary page under 'Form Field Mappings'", 'pardotmarketing' ),
+				'conditions'  => array(
+					'terms' => array(
+						array(
+							'name'     => 'type',
+							'operator' => '!in',
+							'value'    => array(
+								'recaptcha',
+							),
+						),
+					),
+				),
+			)
 		);
 
 		$repeater->add_control(
 			'type',
-			[
-				'label' => __( 'Type', 'pardotmarketing' ),
-				'type' => \Elementor\Controls_Manager::SELECT,
-				'default'    => 'text',
-				'options'    => [
-					'text'     => __( 'Text', 'pardotmarketing' ),
-					'textarea' => __( 'Textarea', 'pardotmarketing' ),
-					'email'    => __( 'Email', 'pardotmarketing' ),
-					'url'      => __( 'URL', 'pardotmarketing' ),
-					'tel'      => __( 'Telephone', 'pardotmarketing' ),
-					'checkbox' => __( 'Checkbox', 'pardotmarketing' ),
-					'radio'    => __( 'Radio', 'pardotmarketing' ),
-					'select'   => __( 'Select', 'pardotmarketing' ),
-					'country'  => __( 'Country', 'pardotmarketing' ),
-					'hidden'   => __( 'Hidden', 'pardotmarketing' ),
-				],
-			]
+			array(
+				'label'   => __( 'Type', 'pardotmarketing' ),
+				'type'    => \Elementor\Controls_Manager::SELECT,
+				'default' => 'text',
+				'options' => array(
+					'text'      => __( 'Text', 'pardotmarketing' ),
+					'textarea'  => __( 'Textarea', 'pardotmarketing' ),
+					'email'     => __( 'Email', 'pardotmarketing' ),
+					'url'       => __( 'URL', 'pardotmarketing' ),
+					'tel'       => __( 'Telephone', 'pardotmarketing' ),
+					'checkbox'  => __( 'Checkbox', 'pardotmarketing' ),
+					'radio'     => __( 'Radio', 'pardotmarketing' ),
+					'select'    => __( 'Select', 'pardotmarketing' ),
+					'country'   => __( 'Country', 'pardotmarketing' ),
+					'hidden'    => __( 'Hidden', 'pardotmarketing' ),
+					'recaptcha' => __( 'reCAPTCHA v3', 'pardotmarketing' ),
+				),
+			)
 		);
 
 		$repeater->add_control(
 			'label',
-			[
-				'label' => __( 'Label', 'pardotmarketing' ),
-				'type' => \Elementor\Controls_Manager::TEXT,
+			array(
+				'label'       => __( 'Label', 'pardotmarketing' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
 				'placeholder' => __( 'i.e. First Name', 'pardotmarketing' ),
-				'conditions' => [
-					'terms' => [
-						[
-							'name' => 'type',
+				'conditions'  => array(
+					'terms' => array(
+						array(
+							'name'     => 'type',
 							'operator' => '!in',
-							'value' => [
+							'value'    => array(
 								'hidden',
-							],
-						],
-					],
-				],
-			]
+								'recaptcha',
+							),
+						),
+					),
+				),
+			)
 		);
 
 		$repeater->add_control(
@@ -243,22 +256,26 @@ class FormHandler extends Widget_Base {
 
 		$repeater->add_control(
 			'placeholder',
-			[
-				'label' => __( 'Placeholder', 'pardotmarketing' ),
-				'type' => \Elementor\Controls_Manager::TEXT,
+			array(
+				'label'       => __( 'Placeholder', 'pardotmarketing' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
 				'placeholder' => __( 'i.e. Enter your first name', 'pardotmarketing' ),
-				'conditions' => [
-					'terms' => [
-						[
-							'name' => 'type',
+				'conditions'  => array(
+					'terms' => array(
+						array(
+							'name'     => 'type',
 							'operator' => '!in',
-							'value' => [
-								'hidden', 'checkbox', 'select', 'radio'
-							],
-						],
-					],
-				],
-			]
+							'value'    => array(
+								'hidden',
+								'checkbox',
+								'select',
+								'radio',
+								'recaptcha',
+							),
+						),
+					),
+				),
+			)
 		);
 
 		$repeater->add_control(
@@ -278,6 +295,13 @@ class FormHandler extends Widget_Base {
 							'operator' => 'in',
 							'value'    => array( 'country' ),
 						),
+						array(
+							'name'     => 'type',
+							'operator' => '!in',
+							'value'    => array(
+								'recaptcha',
+							),
+						),
 					),
 				),
 			)
@@ -285,14 +309,25 @@ class FormHandler extends Widget_Base {
 
 		$repeater->add_control(
 			'value',
-			[
-				'label' => __( 'Default Value', 'pardotmarketing' ),
-				'type' => \Elementor\Controls_Manager::TEXT,
+			array(
+				'label'       => __( 'Default Value', 'pardotmarketing' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
 				'placeholder' => __( 'i.e. John Doe', 'pardotmarketing' ),
-				'dynamic' => [
+				'dynamic'     => array(
 					'active' => true,
-				],
-			]
+				),
+				'conditions'  => array(
+					'terms' => array(
+						array(
+							'name'     => 'type',
+							'operator' => '!in',
+							'value'    => array(
+								'recaptcha',
+							),
+						),
+					),
+				),
+			)
 		);
 
 		$repeater->add_control(
@@ -343,25 +378,26 @@ class FormHandler extends Widget_Base {
 
 		$repeater->add_control(
 			'required',
-			[
-				'label' => __( 'Required', 'pardotmarketing' ),
-				'type' => \Elementor\Controls_Manager::SWITCHER,
-				'label_on' => __( 'Yes', 'pardotmarketing' ),
-				'label_off' => __( 'No', 'pardotmarketing' ),
+			array(
+				'label'        => __( 'Required', 'pardotmarketing' ),
+				'type'         => \Elementor\Controls_Manager::SWITCHER,
+				'label_on'     => __( 'Yes', 'pardotmarketing' ),
+				'label_off'    => __( 'No', 'pardotmarketing' ),
 				'return_value' => 'yes',
-				'default' => 'yes',
-				'conditions' => [
-					'terms' => [
-						[
-							'name' => 'type',
+				'default'      => 'yes',
+				'conditions'   => array(
+					'terms' => array(
+						array(
+							'name'     => 'type',
 							'operator' => '!in',
-							'value' => [
+							'value'    => array(
 								'hidden',
-							],
-						],
-					],
-				],
-			]
+								'recaptcha',
+							),
+						),
+					),
+				),
+			)
 		);
 
 		$repeater->add_control(
@@ -410,43 +446,48 @@ class FormHandler extends Widget_Base {
 
 		$repeater->add_responsive_control(
 			'width',
-			[
-				'label' => __( 'Column Width', 'pardotmarketing' ),
-				'type' => \Elementor\Controls_Manager::SELECT,
-				'options' => [
-					'auto'  => __( 'Default', 'pardotmarketing' ),
+			array(
+				'label'           => __( 'Column Width', 'pardotmarketing' ),
+				'type'            => \Elementor\Controls_Manager::SELECT,
+				'options' => array(
+					'auto' => __( 'Default', 'pardotmarketing' ),
 					'100%' => __( '100%', 'pardotmarketing' ),
-					'80%' => __( '80%', 'pardotmarketing' ),
-					'75%' => __( '75%', 'pardotmarketing' ),
-					'66%' => __( '66%', 'pardotmarketing' ),
-					'60%' => __( '60%', 'pardotmarketing' ),
-					'50%' => __( '50%', 'pardotmarketing' ),
-					'40%' => __( '40%', 'pardotmarketing' ),
-					'33%' => __( '33%', 'pardotmarketing' ),
-					'25%' => __( '25%', 'pardotmarketing' ),
-					'20%' => __( '20%', 'pardotmarketing' ),
-				],
+					'80%'  => __( '80%', 'pardotmarketing' ),
+					'75%'  => __( '75%', 'pardotmarketing' ),
+					'66%'  => __( '66%', 'pardotmarketing' ),
+					'60%'  => __( '60%', 'pardotmarketing' ),
+					'50%'  => __( '50%', 'pardotmarketing' ),
+					'40%'  => __( '40%', 'pardotmarketing' ),
+					'33%'  => __( '33%', 'pardotmarketing' ),
+					'25%'  => __( '25%', 'pardotmarketing' ),
+					'20%'  => __( '20%', 'pardotmarketing' ),
+				),
 				'desktop_default' => 'auto',
-				'tablet_default' => 'auto',
-				'mobile_default' => 'auto',
-				'devices' => [ 'desktop', 'tablet', 'mobile' ],
-				'selectors' => [
+				'tablet_default'  => 'auto',
+				'mobile_default'  => 'auto',
+				'devices'         => array(
+					'desktop',
+					'tablet',
+					'mobile',
+				),
+				'selectors'       => array(
 					'(desktop) {{WRAPPER}} {{CURRENT_ITEM}}' => 'width: {{VALUE}};',
 					//'(tablet) {{WRAPPER}} {{CURRENT_ITEM}} .pardotmarketing-form-handler-field' => 'width: {{width_tablet.VALUE}};',
 					//'(mobile) {{WRAPPER}} {{CURRENT_ITEM}} .pardotmarketing-form-handler-field' => 'width: {{width_mobile.VALUE}};',
-				],
-				'conditions' => [
-					'terms' => [
-						[
-							'name' => 'type',
+				),
+				'conditions'      => array(
+					'terms' => array(
+						array(
+							'name'     => 'type',
 							'operator' => '!in',
-							'value' => [
+							'value'    => array(
 								'hidden',
-							],
-						],
-					],
-				],
-			]
+								'recaptcha',
+							),
+						),
+					),
+				),
+			)
 		);
 
 		$this->add_control(
@@ -815,500 +856,12 @@ class FormHandler extends Widget_Base {
 	 */
 	protected function render() {
 		$settings = $this->get_settings_for_display();
-		if ( ! $settings['fields'] ) { return; }
-
-		$widget_id = $this->get_id();
-		if ( ! empty( $settings['form_id'] ) ) {
-			$widget_id = $settings['form_id'];
+		if ( ! $settings['fields'] ) {
+			return;
 		}
 
-		// Get the spacing
-		$column_spacing = $settings['column_gap']['size'] / 2;
-		$rows_spacing   = $settings['rows_gap']['size'];
-		$grid_offset    = ( $column_spacing * -1 ) . $settings['column_gap']['unit'];
-
-		do_action('pardotmarketing_before_form_handler');
-		?>
-		<div class="pardotmarketing-form-handler">
-			<?php if ( ! empty( $_REQUEST['success'] ) ): ?>
-				<div class="pardotmarketing-form-handler-message pardotmarketing-form-handler-success">
-					<?php if ( $settings['custom_messages'] == 'yes' && $settings['success_message'] ): ?>
-						<p><?php echo $settings['success_message']; ?></p>
-					<?php else: ?>
-						<p><?php _e( 'Your submission has been successfully sent.', 'pardotmarketing' ); ?></p>
-					<?php endif; ?>
-				</div>
-			<?php endif; ?>
-
-			<?php
-			if ( ! empty( $_REQUEST['success'] ) && 'yes' == $settings['success_hide_form'] ):
-				return;
-			endif;
-			do_action('pardotmarketing_pre_form');
-			?>
-			<form
-				class="pardotmarketing-form-handler-form"
-				method="post"
-				data-url="<?php echo esc_url( $settings['endpoint']['url'] ); ?>"
-				id="<?php echo esc_attr( $widget_id ); ?>"
-			>
-				<?php do_action('pardotmarketing_form'); ?>
-				<?php
-				if ( ! empty( $_REQUEST['errors'] ) ):
-					do_action('pardotmarketing_pre_error_msg');
-					?>
-					<div class="pardotmarketing-form-handler-message pardotmarketing-form-handler-error">
-						<?php do_action('pardotmarketing_error_msg'); ?>
-						<?php if ( $settings['custom_messages'] == 'yes' && $settings['error_message'] ): ?>
-							<p><?php echo $settings['error_message']; ?></p>
-						<?php elseif( ! empty( $_REQUEST['errorMessage'] ) ): ?>
-							<p><?php echo sanitize_text_field( $_REQUEST['errorMessage'] ); ?></p>
-						<?php else: ?>
-							<p><?php _e( 'There was a problem submitting the form. Please try again.', 'pardotmarketing' ); ?></p>
-						<?php endif; ?>
-						<?php do_action('pardotmarketing_error_post_msg'); ?>
-					</div>
-				<?php endif; ?>
-				<div class="pardotmarketing-form-handler-fields">
-					<?php
-					foreach( $settings['fields'] as $field ):
-						// Get the field value
-						$value = ! empty( $field['value'] ) ? $field['value'] : false;
-						if ( ! empty( $_REQUEST[ $field['key'] ] ) ):
-							$value = sanitize_text_field( $_REQUEST[ $field['key'] ] );
-						endif;
-
-						// Add the field container
-						if( $field['type'] != 'hidden' ):
-							$label_classes = [ 'pardotmarketing-form-handler-label' ];
-							?>
-							<div class="pardotmarketing-form-handler-field elementor-repeater-item-<?php echo $field['_id']; ?>">
-								<label class="pardotmarketing-form-handler-label <?php if ( ! $settings['show_label'] ) : ?> pardotmarketing-screen-reader-text<?php endif; ?>" for="pardotmarketing-form-handler-<?php echo esc_attr( $field['key'] ); ?>">
-									<?php echo $field['label']; ?>
-								</label>
-						<?php endif; ?>
-						<?php
-						// Output the field
-						switch( $field['type'] ):
-							case 'country':
-								?>
-								<select
-									name="<?php echo esc_attr( $field['key'] ); ?>"
-									class="pardotmarketing-form-handler-select"
-									<?php if ( $field['required'] ): ?> required<?php endif; ?>
-								>
-									<?php if ( ! empty( $field['placeholder'] ) ): ?><option value=""><?php echo $field['placeholder']; ?></option><?php endif; ?>
-									<?php
-									$countries = apply_filters(
-										'pardot_marketing_country_options_' . $widget_id,
-										array(
-											'AF' => 'Afghanistan',
-											'AL' => 'Albania',
-											'DZ' => 'Algeria',
-											'AS' => 'American Samoa',
-											'AD' => 'Andorra',
-											'AO' => 'Angola',
-											'AI' => 'Anguilla',
-											'AQ' => 'Antarctica',
-											'AG' => 'Antigua and Barbuda',
-											'AR' => 'Argentina',
-											'AM' => 'Armenia',
-											'AW' => 'Aruba',
-											'AU' => 'Australia',
-											'AT' => 'Austria',
-											'AZ' => 'Azerbaijan',
-											'BS' => 'Bahamas',
-											'BH' => 'Bahrain',
-											'BD' => 'Bangladesh',
-											'BB' => 'Barbados',
-											'BY' => 'Belarus',
-											'BE' => 'Belgium',
-											'BZ' => 'Belize',
-											'BJ' => 'Benin',
-											'BM' => 'Bermuda',
-											'BT' => 'Bhutan',
-											'BO' => 'Bolivia',
-											'BA' => 'Bosnia and Herzegovina',
-											'BW' => 'Botswana',
-											'BV' => 'Bouvet Island',
-											'BR' => 'Brazil',
-											'IO' => 'British Indian Ocean Territory',
-											'BN' => 'Brunei Darussalam',
-											'BG' => 'Bulgaria',
-											'BF' => 'Burkina Faso',
-											'BI' => 'Burundi',
-											'KH' => 'Cambodia',
-											'CM' => 'Cameroon',
-											'CA' => 'Canada',
-											'CV' => 'Cape Verde',
-											'KY' => 'Cayman Islands',
-											'CF' => 'Central African Republic',
-											'TD' => 'Chad',
-											'CL' => 'Chile',
-											'CN' => 'China',
-											'CX' => 'Christmas Island',
-											'CC' => 'Cocos (Keeling) Islands',
-											'CO' => 'Colombia',
-											'KM' => 'Comoros',
-											'CG' => 'Congo',
-											'CD' => 'Congo, the Democratic Republic of the',
-											'CK' => 'Cook Islands',
-											'CR' => 'Costa Rica',
-											'CI' => 'Cote D\'Ivoire',
-											'HR' => 'Croatia',
-											'CU' => 'Cuba',
-											'CY' => 'Cyprus',
-											'CZ' => 'Czech Republic',
-											'DK' => 'Denmark',
-											'DJ' => 'Djibouti',
-											'DM' => 'Dominica',
-											'DO' => 'Dominican Republic',
-											'EC' => 'Ecuador',
-											'EG' => 'Egypt',
-											'SV' => 'El Salvador',
-											'GQ' => 'Equatorial Guinea',
-											'ER' => 'Eritrea',
-											'EE' => 'Estonia',
-											'ET' => 'Ethiopia',
-											'FK' => 'Falkland Islands (Malvinas)',
-											'FO' => 'Faroe Islands',
-											'FJ' => 'Fiji',
-											'FI' => 'Finland',
-											'FR' => 'France',
-											'GF' => 'French Guiana',
-											'PF' => 'French Polynesia',
-											'TF' => 'French Southern Territories',
-											'GA' => 'Gabon',
-											'GM' => 'Gambia',
-											'GE' => 'Georgia',
-											'DE' => 'Germany',
-											'GH' => 'Ghana',
-											'GI' => 'Gibraltar',
-											'GR' => 'Greece',
-											'GL' => 'Greenland',
-											'GD' => 'Grenada',
-											'GP' => 'Guadeloupe',
-											'GU' => 'Guam',
-											'GT' => 'Guatemala',
-											'GN' => 'Guinea',
-											'GW' => 'Guinea-Bissau',
-											'GY' => 'Guyana',
-											'HT' => 'Haiti',
-											'HM' => 'Heard Island and Mcdonald Islands',
-											'VA' => 'Holy See (Vatican City State)',
-											'HN' => 'Honduras',
-											'HK' => 'Hong Kong',
-											'HU' => 'Hungary',
-											'IS' => 'Iceland',
-											'IN' => 'India',
-											'ID' => 'Indonesia',
-											'IR' => 'Iran, Islamic Republic of',
-											'IQ' => 'Iraq',
-											'IE' => 'Ireland',
-											'IL' => 'Israel',
-											'IT' => 'Italy',
-											'JM' => 'Jamaica',
-											'JP' => 'Japan',
-											'JO' => 'Jordan',
-											'KZ' => 'Kazakhstan',
-											'KE' => 'Kenya',
-											'KI' => 'Kiribati',
-											'KP' => 'Korea, Democratic People\'s Republic of',
-											'KR' => 'Korea, Republic of',
-											'KW' => 'Kuwait',
-											'KG' => 'Kyrgyzstan',
-											'LA' => 'Lao People\'s Democratic Republic',
-											'LV' => 'Latvia',
-											'LB' => 'Lebanon',
-											'LS' => 'Lesotho',
-											'LR' => 'Liberia',
-											'LY' => 'Libyan Arab Jamahiriya',
-											'LI' => 'Liechtenstein',
-											'LT' => 'Lithuania',
-											'LU' => 'Luxembourg',
-											'MO' => 'Macao',
-											'MK' => 'Macedonia, the Former Yugoslav Republic of',
-											'MG' => 'Madagascar',
-											'MW' => 'Malawi',
-											'MY' => 'Malaysia',
-											'MV' => 'Maldives',
-											'ML' => 'Mali',
-											'MT' => 'Malta',
-											'MH' => 'Marshall Islands',
-											'MQ' => 'Martinique',
-											'MR' => 'Mauritania',
-											'MU' => 'Mauritius',
-											'YT' => 'Mayotte',
-											'MX' => 'Mexico',
-											'FM' => 'Micronesia, Federated States of',
-											'MD' => 'Moldova, Republic of',
-											'MC' => 'Monaco',
-											'MN' => 'Mongolia',
-											'MS' => 'Montserrat',
-											'MA' => 'Morocco',
-											'MZ' => 'Mozambique',
-											'MM' => 'Myanmar',
-											'NA' => 'Namibia',
-											'NR' => 'Nauru',
-											'NP' => 'Nepal',
-											'NL' => 'Netherlands',
-											'AN' => 'Netherlands Antilles',
-											'NC' => 'New Caledonia',
-											'NZ' => 'New Zealand',
-											'NI' => 'Nicaragua',
-											'NE' => 'Niger',
-											'NG' => 'Nigeria',
-											'NU' => 'Niue',
-											'NF' => 'Norfolk Island',
-											'MP' => 'Northern Mariana Islands',
-											'NO' => 'Norway',
-											'OM' => 'Oman',
-											'PK' => 'Pakistan',
-											'PW' => 'Palau',
-											'PS' => 'Palestinian Territory, Occupied',
-											'PA' => 'Panama',
-											'PG' => 'Papua New Guinea',
-											'PY' => 'Paraguay',
-											'PE' => 'Peru',
-											'PH' => 'Philippines',
-											'PN' => 'Pitcairn',
-											'PL' => 'Poland',
-											'PT' => 'Portugal',
-											'PR' => 'Puerto Rico',
-											'QA' => 'Qatar',
-											'RE' => 'Reunion',
-											'RO' => 'Romania',
-											'RU' => 'Russian Federation',
-											'RW' => 'Rwanda',
-											'SH' => 'Saint Helena',
-											'KN' => 'Saint Kitts and Nevis',
-											'LC' => 'Saint Lucia',
-											'PM' => 'Saint Pierre and Miquelon',
-											'VC' => 'Saint Vincent and the Grenadines',
-											'WS' => 'Samoa',
-											'SM' => 'San Marino',
-											'ST' => 'Sao Tome and Principe',
-											'SA' => 'Saudi Arabia',
-											'SN' => 'Senegal',
-											'CS' => 'Serbia and Montenegro',
-											'SC' => 'Seychelles',
-											'SL' => 'Sierra Leone',
-											'SG' => 'Singapore',
-											'SK' => 'Slovakia',
-											'SI' => 'Slovenia',
-											'SB' => 'Solomon Islands',
-											'SO' => 'Somalia',
-											'ZA' => 'South Africa',
-											'GS' => 'South Georgia and the South Sandwich Islands',
-											'ES' => 'Spain',
-											'LK' => 'Sri Lanka',
-											'SD' => 'Sudan',
-											'SR' => 'Suriname',
-											'SJ' => 'Svalbard and Jan Mayen',
-											'SZ' => 'Swaziland',
-											'SE' => 'Sweden',
-											'CH' => 'Switzerland',
-											'SY' => 'Syrian Arab Republic',
-											'TW' => 'Taiwan, Province of China',
-											'TJ' => 'Tajikistan',
-											'TZ' => 'Tanzania, United Republic of',
-											'TH' => 'Thailand',
-											'TL' => 'Timor-Leste',
-											'TG' => 'Togo',
-											'TK' => 'Tokelau',
-											'TO' => 'Tonga',
-											'TT' => 'Trinidad and Tobago',
-											'TN' => 'Tunisia',
-											'TR' => 'Turkey',
-											'TM' => 'Turkmenistan',
-											'TC' => 'Turks and Caicos Islands',
-											'TV' => 'Tuvalu',
-											'UG' => 'Uganda',
-											'UA' => 'Ukraine',
-											'AE' => 'United Arab Emirates',
-											'GB' => 'United Kingdom',
-											'US' => 'United States',
-											'UM' => 'United States Minor Outlying Islands',
-											'UY' => 'Uruguay',
-											'UZ' => 'Uzbekistan',
-											'VU' => 'Vanuatu',
-											'VE' => 'Venezuela',
-											'VN' => 'Viet Nam',
-											'VG' => 'Virgin Islands, British',
-											'VI' => 'Virgin Islands, U.s.',
-											'WF' => 'Wallis and Futuna',
-											'EH' => 'Western Sahara',
-											'YE' => 'Yemen',
-											'ZM' => 'Zambia',
-											'ZW' => 'Zimbabwe',
-										)
-									);
-									foreach( $countries as $key => $name ):
-										$opt_val = $key;
-										if ( ! empty( $field['submitted_value'] ) && 'name' === $field['submitted_value'] ) {
-											$opt_val = $name;
-										}
-										?>
-										<option
-											value="<?php echo $opt_val; ?>"
-											<?php if ( $value == $opt_val ): ?> selected="selected"<?php endif; ?>
-										>
-											<?php echo $name; ?>
-										</option>
-										<?php
-									endforeach;
-									?>
-								</select>
-								<?php
-							break;
-							case 'tel':
-							case 'text':
-							case 'url':
-							case 'email':
-							case 'hidden':
-								?>
-								<input
-									class="pardotmarketing-form-handler-input"
-									type="<?php echo $field['type']; ?>"
-									name="<?php echo esc_attr( $field['key'] ); ?>"
-									id="pardotmarketing-form-handler-<?php echo esc_attr( $field['key'] ); ?>"
-									<?php if ( ! empty( $field['minlength'] ) ): ?>minlength="<?php echo intval( $field['minlength'] ); ?>"<?php endif; ?>
-									<?php if ( ! empty( $field['maxlength'] ) ): ?>maxlength="<?php echo intval( $field['maxlength'] ); ?>"<?php endif; ?>
-									<?php if ( $field['placeholder'] ): ?> placeholder="<?php echo esc_attr( $field['placeholder'] ); ?>"<?php endif; ?>
-									<?php if ( $value ): ?> value="<?php echo esc_attr( $value ); ?>"<?php endif; ?>
-									<?php if ( $field['required'] ): ?> required<?php endif; ?>
-								>
-								<?php
-							break;
-							case 'textarea':
-								?>
-								<textarea
-									rows="<?php echo $field['rows']; ?>"
-									class="pardotmarketing-form-handler-input"
-									name="<?php echo esc_attr( $field['key'] ); ?>"
-									id="pardotmarketing-form-handler-<?php echo esc_attr( $field['key'] ); ?>"
-									<?php if ( ! empty( $field['minlength'] ) ): ?>minlength="<?php echo intval( $field['minlength'] ); ?>"<?php endif; ?>
-									<?php if ( ! empty( $field['maxlength'] ) ): ?>maxlength="<?php echo intval( $field['maxlength'] ); ?>"<?php endif; ?>
-									<?php if ( $field['placeholder'] ): ?> placeholder="<?php echo esc_attr( $field['placeholder'] ); ?>"<?php endif; ?>
-									<?php if ( $field['required'] ): ?> required<?php endif; ?>><?php echo trim( $value ); ?></textarea>
-								<?php
-							break;
-							case 'select':
-								?>
-								<select
-									name="<?php echo esc_attr( $field['key'] ); ?>"
-									class="pardotmarketing-form-handler-select"
-									<?php if ( $field['required'] ): ?> required<?php endif; ?>
-								>
-									<?php
-									$options = explode( "\n", $field['options'] );
-									foreach( $options as $key => $val ):
-										$option = explode( '|', $val );
-										?>
-										<option
-											value="<?php echo esc_attr( $option[0] ); ?>"
-											<?php if ( $value == $option[0] ): ?> selected="selected"<?php endif; ?>
-										>
-											<?php echo ! empty( $option[1] ) ? esc_attr( $option[1] ) : esc_attr( $option[0] ); ?>
-										</option>
-										<?php
-									endforeach;
-									?>
-								</select>
-								<?php
-							break;
-							case 'checkbox':
-							case 'radio':
-								$options_classes = array( 'pardotmarketing-form-handler-options' );
-
-								if ( 'yes' === $field['inline'] ) :
-									$options_classes[] = 'pardotmarketing-form-handler-options-inline';
-								endif;
-								?>
-								<div class="<?php echo esc_attr( implode( ' ', $options_classes ) ); ?>">
-									<?php
-									$options = explode( "\n", $field['options'] );
-									$name    = $field['key'];
-
-									// If more than one option, send as an array.
-									if ( count( $options ) > 1 && 'radio' !== $field['type'] ) :
-										$name = $field['key'] . '[]';
-									endif;
-
-									$option_count = 0;
-									foreach ( $options as $key => $val ) :
-										$option_count++;
-										$option    = explode( '|', $val );
-										$option_id = 'pardotmarketing-form-handler-' . esc_attr( $field['key'] . '-' . $option_count );
-										?>
-										<div class="pardotmarketing-form-handler-option">
-											<input
-												type="<?php echo $field['type']; ?>"
-												id="<?php echo $option_id; ?>"
-												value="<?php echo esc_attr( $option[0] ); ?>"
-												<?php if ( $value == $option[0] ): ?> checked="checked"<?php endif; ?>
-												name="<?php echo esc_attr( $name ); ?>"
-												class="pardotmarketing-form-handler-option-input"
-											>
-											<label for="<?php echo $option_id; ?>">
-												<?php echo ! empty( $option[1] ) ? esc_attr( $option[1] ) : esc_attr( $option[0] ); ?>
-											</label>
-										</div>
-										<?php
-									endforeach;
-									?>
-								</div>
-								<?php
-							break;
-						endswitch;
-						?>
-						<?php if( $field['type'] != 'hidden' ): ?></div><?php endif; ?>
-					<?php endforeach; ?>
-					<div class="pardotmarketing-form-handler-field pardotmarketing-form-handler-field-submit">
-						<button
-							type="submit"
-							class="pardotmarketing-form-handler-button"
-						><?php echo $settings['submit_text']; ?></button>
-					</div>
-				</div>
-			</form>
-			<script>
-			(function( $ ) {
-				'use strict';
-
-				$(function() {
-					var $form = $('#<?php echo esc_attr( $widget_id ); ?>');
-					$form.attr( 'data-pardot-marketing', 'processed' );
-
-					$form.validate({
-						<?php
-						$options = apply_filters( 'pardotmarketing_form_handler_validation_options_filter_' . $widget_id, [
-							'errorClass' => '"pardotmarketing-form-handler-field-error"',
-							'validClass' => '"pardotmarketing-form-handler-field-valid"',
-							'submitHandler' => 'function(form) {
-								$(form).addClass("pardotmarketing-form-handler-form-is-submitting");
-								$(form).attr("action", $(form).data("url"));
-
-								$(".pardotmarketing-form-handler-button", $(form)).html("' . $settings['submit_text_processing'] . '");
-
-								form.submit();
-							}'
-						]);
-
-						if ( $options ):
-							foreach( $options as $key => $value ):
-								?>
-								'<?php echo $key; ?>': <?php echo $value; ?>,
-								<?php
-							endforeach;
-						endif;
-						?>
-					});
-				});
-			})(jQuery);
-			</script>
-		</div>
-		<?php
+		$settings['form_id'] = ! empty( $settings['form_id'] ) ? $settings['form_id'] : $this->get_id();
+		echo pardotmarket_form_handler_form( $settings ); // @codingStandardsIgnoreLine
 	}
 
 	/**
